@@ -1,5 +1,13 @@
-Windows:
+linux:
+cd /home/admin/Pi-Sensor-Hub-with-Facial-Recognition/Face-Recognition
 python3 -m venv SenseHub
-.\SenseHub\Scripts\activate
+source /home/admin/SensorHub/bin/activate
+python3 main_app.py
+
+/home/admin/SensorHub/bin/python3 /home/admin/Pi-Sensor-Hub-with-Facial-Recognition/Face-Recognition/main_app_2.py
+
+/home/admin/SensorHub/bin/python3 /home/admin/Pi-Sensor-Hub-with-Facial-Recognition/Face-Recognition/main_app.py
+
+
 
 
