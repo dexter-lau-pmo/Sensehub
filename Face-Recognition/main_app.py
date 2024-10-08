@@ -22,7 +22,7 @@ class MainApp:
         #json_file_path = os.path.normpath(os.path.join(script_dir, '..', 'SettingsPage', 'UserPrefs.json'))
         #print(json_file_path)
         
-        json_file_path = constants.settings_page_file
+        json_file_path = constants.settings_page_file #'../SettingsPage/UserPrefs.json'  
         
         # Open the JSON file for reading
         with open(json_file_path, 'r') as file:
@@ -69,7 +69,7 @@ class MainApp:
                 local_img_path = folder_path + file_name
                 thumbnail_path = file_name[:-3] + "jpg"
                 local_thumbnail_path = self.data['filePaths']['snapshotFolder'] + thumbnail_path
-                self.camera.record_video(3, local_img_path, local_thumbnail_path) #Video length is reduced
+                self.camera.record_video(1 , local_img_path, local_thumbnail_path , img) #Video length is further reduced # Added img to supply thumbnail image
                 file_name = "alerts/" + file_name
                 gcp_thumbnail_path = "alerts/" + thumbnail_path
                
@@ -78,18 +78,19 @@ class MainApp:
                 json_object['mediaURL'] = side_effect_url
                 json_object['imagepath'] = gcp_thumbnail_url
                 self.mqtt_client.publish(json_object)
+                time.sleep(1)
             
             #Recogniser update
             #Stop recognising to download new trainer if Flag is raised by MQTT
             if self.mqtt_client.update_trainer == True and self.mqtt_client.url != "":
                 #File avaliable for download
                 print("Start download of new trainer file")
-                self.mqtt_client.custom_topic_publish("\nDownload started...\n", "/download/response")
+                self.mqtt_client.custom_topic_publish("\n\n\nDownload started...\n\n\n", "/download/response")
                 self.ftp_uploader.download_file(self.mqtt_client.url, trainer_file)
                 print("Start download of new json file")
                 self.ftp_uploader.download_file(self.mqtt_client.url_json, id_to_names_file)
                 self.mqtt_client.update_trainer = False
-                self.mqtt_client.custom_topic_publish("\nDownload successful\n", "/download/response")
+                self.mqtt_client.custom_topic_publish("\n\n\nDownload successful\n\n\n", "/download/response")
 
         print("\n[INFO] Exiting Program and cleanup stuff")
         self.camera.release()
